@@ -1,0 +1,23 @@
+<!-- Filename: Freelance.menu -->
+<!-- Description: Show Freelance menu options -->
+
+<!DOCTYPE Menu PUBLIC "-//freedesktop//DTD Menu 1.0//EN"
+ "http://www.freedesktop.org/standards/menu-spec/1.0/menu.dtd">
+
+<Menu>
+
+  <Name>Applications</Name>
+
+  <!-- Project Tracker Tools -->
+  <Menu>
+    <Name>Project Tracker</Name>
+    <Directory>Project_Tracker.directory</Directory>
+    <Include>
+      <And>
+        <Category>Project_Tracker</Category>
+      </And>
+    </Include>
+  </Menu> 
+  <!-- End Project Tracker Tools -->
+
+</Menu> 

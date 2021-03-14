@@ -1,0 +1,12 @@
+######################################################################
+# File History
+# 03/14/2021 - Andrew Yoder: Initial Release
+######################################################################
+
+[Desktop Entry]
+Type=Application
+Name=Build Invoices
+Icon=/usr/share/icons/Adwaita/32x32/actions/document-open.png
+Exec=/opt/project-tracker/buildInvoices.sh
+Categories=Project_Tracker
+MimeType=application/x-newtype

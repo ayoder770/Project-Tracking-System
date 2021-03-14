@@ -1,0 +1,12 @@
+######################################################################
+# File History
+# 03/14/2021 - Andrew Yoder: Initial Release
+######################################################################
+
+[Desktop Entry]
+Type=Application
+Name=Freelance System
+Icon=/usr/share/icons/Adwaita/32x32/status/appointment-soon.png
+Exec=gnome-terminal --geometry=129x30 --title="Freelance" -e "python3 /opt/project-tracker/freelance.py"
+Categories=Project_Tracker
+MimeType=application/x-newtype
