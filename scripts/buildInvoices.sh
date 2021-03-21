@@ -5,7 +5,7 @@
 ######################################################################
 
 # File Paths
-FL_home="/opt/FLSW"
+FL_home="/opt/project-tracker/"
 
 # Run the build pdf python script and output results to a file
 python3 $FL_home/pdf.py > $FL_home/payPeriodStats.txt
@@ -16,4 +16,4 @@ cat $FL_home/payPeriodStats.txt | zenity --text-info --title="Pay Period Stats" 
 
 
 # Open the summary spreadsheet
-/usr/bin/libreoffice $HOME/Freelancing/Finances/2020_totals.ods
+/usr/bin/libreoffice $HOME/Freelancing/Finances/$( date + '%Y' )_totals.ods

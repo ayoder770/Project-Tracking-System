@@ -10,7 +10,7 @@ import time
 import datetime
 import types
 
-from platform_config import pd_base_dir, db_dir, pt_db
+from platform_config import pt_base_dir, db_dir, pt_db
 
 
 

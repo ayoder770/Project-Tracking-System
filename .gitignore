@@ -1,0 +1,6 @@
+# Ignore rpm dirs
+linux/rpmbuild/BUILD/*
+linux/rpmbuild/BUILDROOT/*
+linux/rpmbuild/RPMS/*
+linux/rpmbuild/SOURCES/*
+linux/rpmbuild/SRPMS/*

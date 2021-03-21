@@ -31,7 +31,7 @@ else:
     quit()
 
 # The Database
-pt_db = db_dir + "freelance.sqlite"
+pt_db = db_dir + "project-tracker.sqlite"
 
 # The Client Workbook
 client_workbook = spreadsheet_dir + "clients.xlsx"
