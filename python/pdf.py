@@ -1,6 +1,7 @@
 ######################################################################
 # File History
 # 03/14/2021 - Andrew Yoder: Initial Release
+# 03/29/2021 - Andrew Yoder: Added imports from config_vars
 ######################################################################
 
 import fpdf, sqlite3, openpyxl, datetime, os
@@ -11,6 +12,8 @@ class MyFPDF(FPDF):
     pass
 
 from platform_config import this_os, pt_base_dir, db_dir, pt_db, img_dir, client_workbook, Freelance_home
+
+from config_vars import provider_name, provider_title, paypal_link, provider_phone, provider_email, provider_location
 
 
 # Globals

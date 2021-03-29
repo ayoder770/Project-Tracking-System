@@ -2,6 +2,7 @@
 ######################################################################
 # File History
 # 03/14/2021 - Andrew Yoder: Initial Release
+# 03/29/2021 - Andrew Yoder: Fixed year variable of the totals spreadsheet
 ######################################################################
 
 # File Paths
@@ -16,4 +17,6 @@ cat $FL_home/payPeriodStats.txt | zenity --text-info --title="Pay Period Stats" 
 
 
 # Open the summary spreadsheet
-/usr/bin/libreoffice $HOME/Freelancing/Finances/$( date + '%Y' )_totals.ods
+year=`date +'%Y'`
+
+/usr/bin/libreoffice $HOME/Freelancing/Finances/${year}_totals.ods

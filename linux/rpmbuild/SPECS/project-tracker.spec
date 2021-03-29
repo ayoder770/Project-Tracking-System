@@ -1,5 +1,5 @@
 Name: project-tracker
-Version: 1.0
+Version: 1.1
 Release: 1
 Summary: System to track projects
 
@@ -18,6 +18,7 @@ License: N/A
 
 # Clean up any remnants of previous build
 rm -rf $RPM_BUILD_ROOT
+rm -f %{_sourcedir}/*
 
 # Set up the directories
 mkdir -p $RPM_BUILD_ROOT/etc/xdg/menus/applications-merged/
@@ -43,7 +44,7 @@ rm -rf $RPM_BUILD_ROOT
 install -d -m 0755 $RPM_BUILD_ROOT/opt/project-tracker/
 install -d -m 0755 $RPM_BUILD_ROOT/opt/project-tracker/spreadsheets/
 install -d -m 0755 $RPM_BUILD_ROOT/opt/project-tracker/images/
-install -d -m 0755 $RPM_BUILD_ROOT/opt/project-tracker/database/
+install -d -m 0777 $RPM_BUILD_ROOT/opt/project-tracker/database/
 install -d -m 0755 $RPM_BUILD_ROOT/usr/share/applications/
 install -d -m 0755 $RPM_BUILD_ROOT/etc/xdg/menus/applications-merged/
 
@@ -62,6 +63,7 @@ install -m 0644 %{_sourcedir}/project-tracker.sqlite $RPM_BUILD_ROOT/opt/project
 # Cleanup after the build process
 %clean
 rm -rf $RPM_BUILD_ROOT
+rm -f %{_sourcedir}/*
 
 
 %files
@@ -73,10 +75,11 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root, root) /etc/xdg/menus/applications-merged/project-tracker.menu
 
 %attr(0755, root, root) /opt/project-tracker/
-%attr(0755, root, root) /opt/project-tracker/freelance.py
+%attr(0755, root, root) /opt/project-tracker/project_tracker.py
 %attr(0755, root, root) /opt/project-tracker/pay_time.py
 %attr(0755, root, root) /opt/project-tracker/pdf.py
-%attr(0755, root, root) /opt/project-tracker/platform_config.py
+%config(noreplace) %attr(0755, root, root) /opt/project-tracker/platform_config.py
+%config(noreplace) %attr(0755, root, root) /opt/project-tracker/config_vars.py
 %attr(0755, root, root) /opt/project-tracker/buildInvoices.sh
 %attr(0666, root, root) /opt/project-tracker/payPeriodStats.txt
 
@@ -86,7 +89,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0755, root, root) /opt/project-tracker/images/
 %attr(0644, root, root) /opt/project-tracker/images/paypal_button.jpg
 
-%attr(0755, root, root) /opt/project-tracker/database/
+%attr(0777, root, root) /opt/project-tracker/database/
 %config(noreplace) %attr(0666, root, root) /opt/project-tracker/database/project-tracker.sqlite
 
 
@@ -101,5 +104,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Mar 29 2021 Andrew Yoder <ayoder770@gmail.com> 1.1
+- Added config_vars.py to spec file list
+* Fri Mar 26 2021 Andrew Yoder <ayoder770@gmail.com> 1.1
+- Changed name of "freelance.py" to "project_tracker.py"
 * Sun Mar 21 2021 Andrew Yoder <ayoder770@gmail.com> 1.0
 - Initial Release

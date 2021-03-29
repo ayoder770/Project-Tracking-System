@@ -1,12 +1,14 @@
 ######################################################################
 # File History
 # 03/14/2021 - Andrew Yoder: Initial Release
+# 03/26/2021 - Andrew Yoder: Changed terminal title from "Freelance" to "Project Tracker"
+#                          : Updated "freelance.py" to "project_tracker.py"
 ######################################################################
 
 [Desktop Entry]
 Type=Application
 Name=Track Projects
 Icon=/usr/share/icons/Adwaita/32x32/status/appointment-soon.png
-Exec=gnome-terminal --geometry=129x30 --title="Freelance" -e "python3 /opt/project-tracker/freelance.py"
+Exec=gnome-terminal --geometry=129x30 --title="Project Tracker" -e "python3 /opt/project-tracker/project_tracker.py"
 Categories=Project_Tracker
 MimeType=application/x-newtype

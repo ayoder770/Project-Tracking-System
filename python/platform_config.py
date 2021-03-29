@@ -2,12 +2,16 @@
 ######################################################################
 # File History
 # 03/14/2021 - Andrew Yoder: Initial Release
+# 03/29/2021 - Andrew Yoder: Updated USER to get username from the system
 ######################################################################
 
-import platform
+import platform, os
 
 # Get the Operating System and set paths
 this_os = platform.system()
+
+# Get the username from the system
+username = os.environ['USER']
 
 # Windows
 if ( this_os == "Windows" ):
@@ -23,7 +27,7 @@ elif ( this_os == "Linux" ):
     db_dir = pt_base_dir + "/database/"
     img_dir = pt_base_dir + "/images/"
     spreadsheet_dir = pt_base_dir + "/spreadsheets/"
-    Freelance_home = "/home/USER/Freelancing/"
+    Freelance_home = "/home/" + username + "/Freelancing/"
     
 # Other/Unsupported
 else:

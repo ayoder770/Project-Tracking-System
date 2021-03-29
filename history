@@ -1,0 +1,11 @@
+1.0-1 : 03/21/2021
+- Initial Release
+
+1.1-1 : 03/29/2021
+- Changed permissions on database directory
+- Changed name of tracker terminal from "Freelance" to "Project Tracker"
+- Changed name of "freelance.py" script to "project_tracker.py"
+- Updated pdf.py to import config_vars variables
+- Updated how platform_config.py gets the username from the system
+- Fixed the year in buildInvoices.sh
+- Updated spec to make config_vars.py a config file
