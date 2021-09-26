@@ -10,7 +10,7 @@
 - Fixed the year in buildInvoices.sh
 - Updated spec to make config_vars.py a config file
 
-2.0-1 : 
+2.0-1 : 09/26/2021
 - Created new utility "Client Manager" to manage all client details
 - Relocated "Add New Client" from "Track Projects" to new "Client Manager"
 - Removed hidden feature to deploy database updates from project_tracker.py
