@@ -1,68 +1,22 @@
 ######################################################################
 # File History
-# 03/14/2021 - Andrew Yoder: Initial Release
-# 03/29/2021 - Andrew Yoder: Added imports from config_vars
+# 03/14/2021 - Andrew Yoder : Initial Release
+# 03/29/2021 - Andrew Yoder : Added imports from config_vars
+# 09/26/2021 - Andrew Yoder : Gather clients from sqlite database vs Excel workbook
+#                           : Create client's invoice directory if it does not already exist
+#                           : Restructure for __main__
+#                           : Use full client's name in Pay Period Stats file/popup
 ######################################################################
 
-import fpdf, sqlite3, openpyxl, datetime, os
+import fpdf, sqlite3, datetime, os
 from fpdf import FPDF
 import pay_time
 
 class MyFPDF(FPDF):
     pass
 
-from platform_config import this_os, pt_base_dir, db_dir, pt_db, img_dir, client_workbook, Freelance_home
-
+from platform_config import this_os, pt_base_dir, db_dir, pt_db, img_dir, Freelance_home
 from config_vars import provider_name, provider_title, paypal_link, provider_phone, provider_email, provider_location
-
-
-# Globals
-totalFromAllClients = 0
-
-# CONSTANTS
-row = 2 # Row of client spreadsheet to begin pulling data from
-column_width = 95.0
-column_spacing = 5
-table_height = 8    #height of table cells
-item_date_width = 14.0 # width of item and date table cells
-task_width = 105.0  # width of task title cells
-hours_rate_total_width = width = 19.0   # width of hours, rate, and total cells
-title_width = 133  # width of grand total lines
-
-
-# Now Time Object
-now = datetime.datetime.now()
-
-
-# Determine information based on the day the invoice is being built
-this_day        = pay_time.get_this_day()
-
-
-# Get month of invoice
-# If < 4, a period 2 invoice from last month is being built
-if int(this_day) < 4:
-    # Since we are building a period 2 invoice for last month...
-    # ... get the name and number of last month...
-    invoice_month = pay_time.get_last_month_name()
-    invoice_month_numb = pay_time.get_last_month_numb()
-# If > 16, a period 2 invoice for current month is being built
-# Otherwise, a period 1 invoice is beign built for the current month
-# In either case, the same functions are called
-else:
-    invoice_month      = pay_time.get_month_name()
-    invoice_month_numb = pay_time.get_month_numb()
-
-# Get the year for which this invoice is being built   
-this_year = pay_time.get_this_year()
-
-
-# Get the period number and dates for which invoice is being built
-period_number   = pay_time.get_period_number( this_day, "pdf")
-this_period     = pay_time.get_this_period_dates(period_number, invoice_month)
-
-
-# Get the dates for which this invoice is sent
-this_sent_on = pay_time.get_send_this_date(period_number, this_day, invoice_month_numb)
 
 
 ###### FUNCTION TO GET ORDINAL INDICATOR OF THE DATE ######
@@ -441,55 +395,92 @@ def print_footer(pdf, prefix, grand_total):
     # Wrap up stuff
     global totalFromAllClients
     totalFromAllClients = totalFromAllClients + float(grand_total)
-    print("Invoice Built for Client "+prefix+": Total Charges: $"+str(format(grand_total,'.2f')))
+    print( client_name + ": Total Charges: $" + str(format(grand_total,'.2f')) )
 ##################################################
  
     
     
     
-    
- 
-    
-    
-    
 #### MAIN PROGRAM ####
+if ( __name__ == "__main__" ):
 
-# PULL IN EXCEL DOC DATA  HERE
-invoice_info = openpyxl.load_workbook(client_workbook)
-sheet = invoice_info["Sheet1"]
+    # Globals
+    totalFromAllClients = 0
 
-# counter for loop
-i = 0
+    # CONSTANTS
+    column_width = 95.0
+    column_spacing = 5
+    table_height = 8    #height of table cells
+    item_date_width = 14.0 # width of item and date table cells
+    task_width = 105.0  # width of task title cells
+    hours_rate_total_width = width = 19.0   # width of hours, rate, and total cells
+    title_width = 133  # width of grand total lines
 
-# Loop over clients
-while True:
-    
-    # Get prefix of client
-    prefix   = sheet.cell(row=i+row, column = 2).value
-    if prefix == None:
-        break
-   
-    # Get the client folder
-    client_folder   = sheet.cell(row=i+row, column = 3).value
-  
-    #Check if client has any projects to build an invoice with
-    if ( build_invoice_check(prefix) ):
-        pdf=MyFPDF()
-        pdf.add_page()    
-        build_invoice(pdf, prefix)
-        doc_path = Freelance_home + client_folder+"/Invoices/"
-        doc_name = prefix+"_"+invoice_month+"_"+str(this_year)+"_Invoice_"+str(period_number)+".pdf"
-        doc_build = doc_path+doc_name
-        pdf.output(doc_build)
-        if ( this_os == "Linux" ):
-            os.system("xdg-open "+doc_build)
-        elif ( this_os == "Windows" ):
-            os.system("start " + doc_build)
+    # Now Time Object
+    now = datetime.datetime.now()
+
+    # Determine information based on the day the invoice is being built
+    this_day        = pay_time.get_this_day()
+
+    # Get month of invoice
+    # If < 4, a period 2 invoice from last month is being built
+    if int(this_day) < 4:
+        # Since we are building a period 2 invoice for last month...
+        # ... get the name and number of last month...
+        invoice_month = pay_time.get_last_month_name()
+        invoice_month_numb = pay_time.get_last_month_numb()
+    # If > 16, a period 2 invoice for current month is being built
+    # Otherwise, a period 1 invoice is beign built for the current month
+    # In either case, the same functions are called
     else:
-        print("No Invoice Built for Client "+prefix)
-    i = i + 1
-  
+        invoice_month      = pay_time.get_month_name()
+        invoice_month_numb = pay_time.get_month_numb()
 
-# Print out closing comments
-print("")
-print("Total charges this billing period: $"+str(format(totalFromAllClients,'.2f')))
+    # Get the year for which this invoice is being built   
+    this_year = pay_time.get_this_year()
+
+    # Get the period number and dates for which invoice is being built
+    period_number   = pay_time.get_period_number( this_day, "pdf")
+    this_period     = pay_time.get_this_period_dates(period_number, invoice_month)
+
+    # Get the dates for which this invoice is sent
+    this_sent_on = pay_time.get_send_this_date(period_number, this_day, invoice_month_numb)
+    
+    # Gather all clients from database
+    db = sqlite3.connect(pt_db)
+    cursor = db.cursor()
+    cursor.execute('''SELECT client_name,client_prefix FROM all_clients''')
+    all_clients = cursor.fetchall()
+
+    # Loop over each client to build invoice
+    for row in all_clients:
+
+        client_name = row[0]
+        prefix = row[1]
+        client_folder = client_name.replace( " ", "_" )
+
+        #Check if client has any projects to build an invoice with
+        if ( build_invoice_check(prefix) ):
+            pdf=MyFPDF()
+            pdf.add_page()    
+            build_invoice(pdf, prefix)
+            doc_path = Freelance_home + client_folder + "/Invoices/"
+
+            # Create the doc path if it does not exist
+            if ( os.path.isdir( doc_path ) == False ):
+                os.makedirs( doc_path )
+
+            doc_name = prefix + "_" + invoice_month + "_" + str(this_year) + "_Invoice_" + str(period_number) + ".pdf"
+            doc_build = doc_path + doc_name
+            pdf.output(doc_build)
+            if ( this_os == "Linux" ):
+                os.system("xdg-open "+doc_build)
+            elif ( this_os == "Windows" ):
+                os.system("start " + doc_build)
+        else:
+            print( client_name + ": Total Charges: $0.00" )
+  
+    # Print out closing comments
+    db.close()
+    print("")
+    print("Total charges this billing period: $"+str(format(totalFromAllClients,'.2f')))
