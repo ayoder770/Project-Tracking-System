@@ -15,3 +15,6 @@
 - Relocated "Add New Client" from "Track Projects" to new "Client Manager"
 - Removed hidden feature to deploy database updates from project_tracker.py
 - General code cleanup in project_tracker.py
+- Updated pay.pdf to pull all clients from sqlite database vs Excel workbook
+- Use client's full name in Pay Period Stats via the prefix/abbreviation
+- Create the client's Invoice directory if it does not exist
