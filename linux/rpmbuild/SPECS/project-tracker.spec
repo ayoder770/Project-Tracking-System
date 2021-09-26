@@ -1,5 +1,5 @@
 Name: project-tracker
-Version: 1.1
+Version: 2.0
 Release: 1
 Summary: System to track projects
 
@@ -72,10 +72,12 @@ rm -f %{_sourcedir}/*
 # Menu Files
 %attr(0644, root, root) /usr/share/applications/project-tracker.desktop
 %attr(0644, root, root) /usr/share/applications/project-tracker-build-invoice.desktop
+%attr(0644, root, root) /usr/share/applications/project-tracker-client-manager.desktop
 %attr(0644, root, root) /etc/xdg/menus/applications-merged/project-tracker.menu
 
 %attr(0755, root, root) /opt/project-tracker/
 %attr(0755, root, root) /opt/project-tracker/project_tracker.py
+%attr(0755, root, root) /opt/project-tracker/client_manager.py
 %attr(0755, root, root) /opt/project-tracker/pay_time.py
 %attr(0755, root, root) /opt/project-tracker/pdf.py
 %config(noreplace) %attr(0755, root, root) /opt/project-tracker/platform_config.py
@@ -104,6 +106,8 @@ rm -f %{_sourcedir}/*
 
 
 %changelog
+* Sun Sep 26 2021 Andrew Yoder <ayoder770@gmail.com> 2.0
+- Added new desktop file and script for client manager utility
 * Mon Mar 29 2021 Andrew Yoder <ayoder770@gmail.com> 1.1
 - Added config_vars.py to spec file list
 * Fri Mar 26 2021 Andrew Yoder <ayoder770@gmail.com> 1.1

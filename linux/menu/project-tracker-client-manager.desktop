@@ -1,0 +1,12 @@
+######################################################################
+# File History
+# 09/26/2021 - Andrew Yoder: Initial Release
+######################################################################
+
+[Desktop Entry]
+Type=Application
+Name=Client Manager
+Icon=/usr/share/icons/Adwaita/32x32/actions/address-book-new.png
+Exec=gnome-terminal --geometry=129x30 --title="Client Manager" -e "python3 /opt/project-tracker/client_manager.py"
+Categories=Project_Tracker
+MimeType=application/x-newtype

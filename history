@@ -9,3 +9,5 @@
 - Updated how platform_config.py gets the username from the system
 - Fixed the year in buildInvoices.sh
 - Updated spec to make config_vars.py a config file
+
+2.0-1 : 

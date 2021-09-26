@@ -2,6 +2,10 @@
 ######################################################################
 # File History
 # 03/14/2021 - Andrew Yoder: Initial Release
+# 09/25/2021 - Andrew Yoder: Relocated add_new_client to new Client Manager Utility
+#                            Removed hidden deploy updates functionality
+#                            Moved wait() functionality to __main__ and removed commented out calls to wait()
+#                            Added .upper() to __main__ actions to make case insensitive
 ######################################################################
 
 import sys
@@ -40,72 +44,6 @@ def get_tabs(len_diff):
     else:
         tab = six_tab
     return tab
-
-def wait():
-    print('')
-    print("Track A Current Project: T")
-    print("Add A New Project: NP")
-    print("Add A New Client: NC")
-    print("View Client Reports: R")
-    print("Delete Project(s): D")
-    print("Add Subcontractor Work: S")
-    print("Add Manual/Fixed Task: M")
-    print("Edit a Current Project: E")
-    print("Quit Program: Q")
-    action = input("What Would You Like To Do? ")
-    if (action == "T" or action == "t"):
-        track_current_project()
-    elif (action == "NC" or action == "nc"):
-        add_new_client()
-    elif (action == "NP" or action == "np"):
-        add_new_project()
-    elif (action == "R" or action == "r"):
-        view_reports()
-    elif (action == "Q" or action == "q"):
-        return "quit"
-    elif (action == "D" or action == "d"):
-        delete_project_s()
-    elif (action == "S" or action == "s"):
-        add_subcontractor()
-    elif (action == "M" or action == "m"):
-        add_manual_job()
-    elif (action == "E" or action == "e"):
-        update_project()
-    elif action == "U":
-        deploy_updates()
-    else:
-        print('')
-        print("Did not recognize that option, please try again")
-        wait()
-    
-
-#FUNCTION TO ADD A NEW CLIENT TO THE SYSTEM
-def add_new_client():
-    print('')
-    print("*********************************************************************************************************************************")
-    print("******************************************************** ADDING NEW CLIENT ******************************************************")
-    print("*********************************************************************************************************************************")
-    new_client_name = input("Enter New Client Full Name: ")
-    new_client_pre  = input("Enter New Client Prefix: ")
-    new_client_hourly = input("Enter New Client's Hourly Rate: ")
-    new_client_address_1 = input("Enter New Client's Address Line 1: ")
-    new_client_address_2 = input("Enter New Client's Address Line 2: ")
-    new_client_proj_table = new_client_pre+"_projects"
-    #connect to db
-    db = sqlite3.connect(pt_db)
-    # Get a cursor object
-    cursor = db.cursor()
-    # Insert New Client
-    cursor.execute('''INSERT INTO all_clients(client_name,client_prefix,client_hourly,address_1,address_2)
-                  VALUES(?,?,?,?,?)''', (new_client_name,new_client_pre,new_client_hourly,new_client_address_1,new_client_address_2))
-    # Create table for new client's projects
-    cursor.execute('''CREATE TABLE '''+new_client_proj_table+'''(id INTEGER PRIMARY KEY, proj_name TEXT, date_start INTEGER, date_end INTEGER, proj_time FLOAT)''')
-    db.commit()
-    db.close()
-    print('New Client '+new_client_name+' Has Been Successfully Added')
-    print("*********************************************************************************************************************************")
-    print('')
-    #wait()
     
 
 # FUNCTION TO ADD A NEW PROJECT FOR A CLIENT
@@ -130,7 +68,6 @@ def add_new_project():
     print('New Project '+new_proj_name+' Has Been Successfully Added For Client '+prefix)
     print("*********************************************************************************************************************************")
     print('')
-    #wait()
     
     
 # FUNCTION TO ADD SUBCONTRACTOR WORK
@@ -377,7 +314,6 @@ def view_reports():
     print("Total Charges This Pay Period: $" + str(total_cost))
     print("*********************************************************************************************************************************")
     print('')
-    #wait()
     
     
 ###### FUNCTION TO DELETE PROJECTS ######      
@@ -412,44 +348,40 @@ def delete_project_s():
     db.close()
     print('')
     
-        
+
     
-    
-###############################################################################
+# main program  
+if __name__ == "__main__":
 
-def deploy_updates():
-    print("...deploying updates...")
-    
-  
-    
-    #connect to db
-    db = sqlite3.connect(pt_db)
+    while True:
 
-    # Get a cursor object
-    cursor = db.cursor()
-    #cursor.execute('''ALTER TABLE subcontractors ADD COLUMN sub_cost''')
-    #cursor.execute('''ALTER TABLE all_clients ADD COLUMN address_2 string''')
-    #cursor.execute('''UPDATE all_clients SET address_2 = ? WHERE client_prefix = ? ''',("", ""))
-    #cursor.execute('''UPDATE all_clients SET address_1 = ? WHERE client_prefix = ? ''',("", ""))
-    #cursor.execute('''UPDATE all_clients SET client_name = ? WHERE client_prefix = ? ''',("", ""))
-    #cursor.execute('''UPDATE all_clients SET client_hourly = ? WHERE client_prefix = ? ''',(, ""))
-    #cursor.execute('''UPDATE all_clients SET client_hourly = ? WHERE client_prefix = ? ''',(, "P"))
-    #cursor.execute('''UPDATE all_clients SET address_2 = ? WHERE client_prefix = ? ''',("", ""))
-    #cursor.execute('''CREATE TABLE manual_work(id INTEGER PRIMARY KEY, for_client TEXT, man_date TEXT, man_job TEXT, man_hours FLOAT, man_rate FLOAT, man_cost FLOAT)''')
-    #cursor.execute('''CREATE TABLE all_clients(id INTEGER PRIMARY KEY, client_name TEXT, client_prefix TEXT, client_hourly DOUBLE)''')
-    #cursor.execute('''UPDATE SWP_projects SET proj_time = ? WHERE id = ? ''',(.2, 11))
-    db.commit()
-    db.close()
+        print("")
+        print("Track A Current Project: T")
+        print("Add A New Project: NP")
+        print("View Project Reports: R")
+        print("Delete Project(s): D")
+        print("Add Subcontractor Work: S")
+        print("Add Manual/Fixed Task: M")
+        print("Edit a Current Project: E")
+        print("Quit Program: Q")
+        action = input("What Would You Like To Do? ").upper()
 
-
-
-   
-    
-#main program  
-while True:
-    run = wait()
-    if (run == "quit"):
-        break
-
-
-
+        if ( action == "T" ):
+            track_current_project()
+        elif ( action == "NP" ):
+            add_new_project()
+        elif ( action == "R" ):
+            view_reports()
+        elif ( action == "Q" ):
+            break
+        elif ( action == "D" ):
+            delete_project_s()
+        elif ( action == "S" ):
+            add_subcontractor()
+        elif ( action == "M" ):
+            add_manual_job()
+        elif ( action == "E" ):
+            update_project()
+        else:
+            print('')
+            print("Did not recognize that option, please try again")
