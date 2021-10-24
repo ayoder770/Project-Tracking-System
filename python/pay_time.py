@@ -1,7 +1,11 @@
-# Module to handle date/time functions for invoices
 ######################################################################
+# File Name: pay_time.py
+#
+# Description: Python functions to handle date/time for invoices
+#
 # File History
-# 03/14/2021 - Andrew Yoder: Initial Release
+# 03/14/2021 - Andrew Yoder : Initial Release
+# 09/28/2021 - Andrew Yoder : Removed commented out / dead code
 ######################################################################
 
 import datetime
@@ -12,7 +16,7 @@ month_by_numb = {"1":"January","2":"February","3":"March","4":"April","5":"May",
 # Dictionary for number of days in each month
 days_in_month = {"January":"31st","February":"28th","March":"31st","April":"30th","May":"31st","June":"30th","July":"31st","August":"31st","September":"30th","October":"31st","November":"30th","December":"31st"}
 
-# Dictionary for all holidays to not send invoices on
+# Dictionary for all federal holidays to not send invoices on
 fed_holidays = {"01-01":"New Year's Day","01-18":"MLK Day","05-XX":"Memorial Day","07-04":"Independence Day","09-07":"Labor Day","11-22":"Thanksgiving Day","11-23":"Black Friday","12-24":"Christmas Eve","12-25":"Christmas Day","12-31":"New Year's Eve"}
 
 # Get a current date/time object
@@ -47,11 +51,6 @@ def get_last_month_name() -> str:
         return month_by_numb[str(12)]
     else:
         return month_by_numb[str(int(this_month) - 1)]
-
-
-# Return name of next month
-#def get_next_month_name():
-#    return month_by_numb[str(now.month + 1)]
 
 
 # Return current year
@@ -97,17 +96,6 @@ def get_this_period_dates(period, period_month):
     return period_dates
 
         
-# Return the dates for the next pay period   
-# Included on the invoice emails
-#def get_next_period_dates(period, period_month):
-#    if period == 1:
-#        next_dates = " "+period_month+" 16th - "+period_month+" "+days_in_month[period_month]+" "
-#    elif period == 2:
-#        next_dates = " "+now.strftime("%B")+" 1st - "+now.strftime("%B")+" 15th "
-#    return next_dates
-
-
-
 # Validate send date to ensure not weekend or holiday
 def validate_send_date(ns_obj):
     check_day = ns_obj.strftime("%A")
@@ -121,28 +109,6 @@ def validate_send_date(ns_obj):
     else:
         return 1
     
-    
-# Return the date that the next invoice will be sent
-# param @period: The period number of invoice going out
-#def get_send_next_date(period):
-#    ns_offset = 0
-#    valid = 0
-#    if period == 1:
-#        ns_base = 1
-#        month = now.month+1 
-#    elif period == 2:
-#        ns_base = 16
-#        month = now.month
-#    ns_obj = datetime.datetime(now.year, month, ns_base+ns_offset)
-#    while valid == 0:
-#        validate = validate_send_date(ns_obj)
-#        if validate == 1:
-#            valid = 1
-#        else:
-#            ns_offset = ns_offset + 1
-#            ns_obj = datetime.datetime(now.year, month, ns_base+ns_offset)
-#    return ns_obj.strftime("%A")+", "+ns_obj.strftime("%b")+" "+ns_obj.strftime("%d")+", "+ns_obj.strftime("%Y")
-
 
 # Function to return the date for which this invoice is being sent
 # Input Arguments:

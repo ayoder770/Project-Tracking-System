@@ -6,6 +6,7 @@
 #                           : Create client's invoice directory if it does not already exist
 #                           : Restructure for __main__
 #                           : Use full client's name in Pay Period Stats file/popup
+# 10/03/2021 - Andrew Yoder : Removed code related to building subcontractor work
 ######################################################################
 
 import fpdf, sqlite3, datetime, os
@@ -172,52 +173,12 @@ def print_out_client_work(pdf, prefix):
         item = item + 1
     db.commit()
     db.close()
-    print_subcontractor_work(pdf, prefix, item, total_hours, total_cost)
+    print_manual_work(pdf, prefix, item, total_hours, total_cost)
 ##########################################################################
 
 
-
-####### FUNCTION TO PRINT OUT SUBCONTRACTOR WORK FOR CLIENT ######
-def print_subcontractor_work(pdf, prefix, item, total_hours, total_cost):
-    total_sub_hours = 0
-    total_sub_cost = 0
-    db = sqlite3.connect(pt_db)
-    # Get a cursor object
-    cursor = db.cursor()
-    cursor.execute('''SELECT * FROM subcontractors WHERE for_client = ? ''',(prefix,))
-    for row in cursor:
-        total_sub_hours = total_sub_hours + float(row[4])
-        total_sub_cost = total_sub_cost + float(row[6])
-        
-        ybefore = pdf.get_y()
-
-        pdf.multi_cell(item_date_width, table_height, str(item), border=1, align="C")
-
-        pdf.set_xy(pdf.l_margin + 1*(item_date_width), ybefore) 
-        pdf.multi_cell(item_date_width, table_height, "-", border=1, align="C")
-
-        pdf.set_xy(pdf.l_margin + 2*(item_date_width), ybefore) 
-        pdf.multi_cell(task_width, table_height, "  EXTERNAL: "+format(row[1])+" - "+format(row[2]), border=1, align="L")
-
-        pdf.set_xy(pdf.l_margin + 2*(item_date_width) + task_width, ybefore) 
-        pdf.multi_cell(hours_rate_total_width, table_height, str(row[4]), border=1, align="C")
-
-        pdf.set_xy(pdf.l_margin + 2*(item_date_width) + task_width + 1*(hours_rate_total_width), ybefore) 
-        pdf.multi_cell(hours_rate_total_width, table_height, "$"+str(row[5]), border=1, align="C")
-
-        pdf.set_xy(pdf.l_margin + 2*(item_date_width) + task_width + 2*(hours_rate_total_width), ybefore) 
-        pdf.multi_cell(hours_rate_total_width, table_height, "$"+str(row[6]), border=1, align="C")
-        item = item + 1
-
-    db.commit()
-    db.close()
-    print_manual_work(pdf, prefix, item, total_hours, total_cost, total_sub_hours, total_sub_cost)
-##################################################################
-
-
-
 ####### FUNCTION TO PRINT OUT MANUAL/FIXED WORK FOR CLIENT ######
-def print_manual_work(pdf, prefix, item, total_hours, total_cost, total_sub_hours, total_sub_cost):
+def print_manual_work(pdf, prefix, item, total_hours, total_cost):
     total_man_hours = 0
     total_man_cost = 0
     db = sqlite3.connect(pt_db)
@@ -265,13 +226,12 @@ def print_manual_work(pdf, prefix, item, total_hours, total_cost, total_sub_hour
         item = item + 1
     db.commit()
     db.close()
-    print_blank_table_row(pdf, prefix, total_hours, total_cost, total_sub_hours, total_sub_cost, total_man_hours, total_man_cost)
+    print_blank_table_row(pdf, prefix, total_hours, total_cost, total_man_hours, total_man_cost)
 ##################################################################
 
 
-
 ###### FUNCTION TO PRINT OUT ONE BLANK TABLE ROW ######
-def print_blank_table_row(pdf, prefix, total_hours, total_cost, total_sub_hours, total_sub_cost, total_man_hours, total_man_cost):
+def print_blank_table_row(pdf, prefix, total_hours, total_cost, total_man_hours, total_man_cost):
     ybefore = pdf.get_y()
     pdf.multi_cell(item_date_width, table_height, "", border=1, align="C")
 
@@ -289,74 +249,33 @@ def print_blank_table_row(pdf, prefix, total_hours, total_cost, total_sub_hours,
 
     pdf.set_xy(pdf.l_margin + 2*(item_date_width) + task_width + 2*(hours_rate_total_width), ybefore) 
     pdf.multi_cell(hours_rate_total_width, table_height, "", border=1, align="C")
-    print_contractor_and_subcontrator_totals(pdf, prefix, total_hours, total_cost, total_sub_hours, total_sub_cost, total_man_hours, total_man_cost)
+    print_grand_total_line(pdf, prefix, total_hours, total_cost, total_man_hours, total_man_cost)
 #######################################################
 
 
-
-###### FUNCTION TO PRINT OUT SEPARATE TOTAL LINES FOR CONTRACTOR AND SUBCONTRACTOR ######
-def print_contractor_and_subcontrator_totals(pdf, prefix, total_hours, total_cost, total_sub_hours, total_sub_cost, total_man_hours, total_man_cost):
-    if ( (total_sub_hours != 0) and (total_sub_cost != 0) ):
-        # LINE FOR ANDREWS WORK
-        pdf.set_font("Arial", size=11)
-        ybefore = pdf.get_y()
-        pdf.multi_cell(title_width, table_height, "Totals for " + provider_name + "'s Support Work     ", border=1, align="R")
-
-        pdf.set_xy(pdf.l_margin + title_width, ybefore) 
-        pdf.multi_cell(hours_rate_total_width, table_height, str(total_hours+total_man_hours), border=1, align="C")
-
-        pdf.set_xy(pdf.l_margin + title_width + 1*(hours_rate_total_width), ybefore) 
-        pdf.multi_cell(hours_rate_total_width, table_height, "", border=1, align="C")
-
-        pdf.set_xy(pdf.l_margin + title_width + 2*(hours_rate_total_width), ybefore) 
-        pdf.multi_cell(hours_rate_total_width, table_height, "$"+str(total_cost+total_man_cost), border=1, align="C")
-
-        # LINE FOR SUBCONTRACTORS
-        ybefore = pdf.get_y()
-        pdf.multi_cell(title_width, table_height, "Totals for External Support Work     ", border=1, align="R")
-
-        pdf.set_xy(pdf.l_margin + title_width, ybefore) 
-        pdf.multi_cell(hours_rate_total_width, table_height, str(total_sub_hours), border=1, align="C")
-
-        pdf.set_xy(pdf.l_margin + title_width + 1*(hours_rate_total_width), ybefore) 
-        pdf.multi_cell(hours_rate_total_width, table_height, "", border=1, align="C")
-
-        pdf.set_xy(pdf.l_margin + title_width + 2*(hours_rate_total_width), ybefore) 
-        pdf.multi_cell(hours_rate_total_width, table_height, "$"+str(total_sub_cost), border=1, align="C")
-        
-    print_grand_total_line(pdf, prefix, total_hours, total_cost, total_sub_hours, total_sub_cost, total_man_hours, total_man_cost)
-#########################################################################################
-
-
-
 ###### FUNCTION TO PRINT OUT GRAND TOTAL LINE ######
-def print_grand_total_line(pdf, prefix, total_hours, total_cost, total_sub_hours, total_sub_cost, total_man_hours, total_man_cost):
+def print_grand_total_line(pdf, prefix, total_hours, total_cost, total_man_hours, total_man_cost):
     pdf.set_font("Arial", style='B', size=11)
     ybefore = pdf.get_y()
     pdf.multi_cell(title_width, table_height, "Grand Total     ", border=1, align="R")
 
     pdf.set_xy(pdf.l_margin + title_width, ybefore)
-    if ( (total_sub_hours != 0) and (total_sub_cost != 0) ):
-        pdf.multi_cell(hours_rate_total_width, table_height, str(format(total_sub_hours + total_hours + total_man_hours,'.2f')), border=1, align="C")
-    else:
-        pdf.multi_cell(hours_rate_total_width, table_height, str(format(total_hours + total_man_hours,'.2f')), border=1, align="C")
+
+    pdf.multi_cell(hours_rate_total_width, table_height, str(format(total_hours + total_man_hours,'.2f')), border=1, align="C")
 
     pdf.set_xy(pdf.l_margin + title_width + 1*(hours_rate_total_width), ybefore) 
     pdf.multi_cell(hours_rate_total_width, table_height, "", border=1, align="C")
 
     pdf.set_xy(pdf.l_margin + title_width + 2*(hours_rate_total_width), ybefore) 
-    if ( (total_sub_hours != 0) and (total_sub_cost != 0) ):
-        pdf.multi_cell(hours_rate_total_width, table_height, "$"+str(format(total_cost + total_sub_cost + total_man_cost,'.2f')), border=1, align="C")
-    else:
-        pdf.multi_cell(hours_rate_total_width, table_height, "$"+str(format(total_cost + total_man_cost,'.2f')), border=1, align="C")
-    print_button_and_thank_you(pdf, prefix, total_cost, total_sub_cost, total_man_cost)
+    
+    pdf.multi_cell(hours_rate_total_width, table_height, "$"+str(format(total_cost + total_man_cost,'.2f')), border=1, align="C")
+    print_button_and_thank_you(pdf, prefix, total_cost, total_man_cost)
 ####################################################
 
 
-
 ###### FUNCTION TO PRINT OUT PAYPAL BUTTON AND THANK YOU ######
-def print_button_and_thank_you(pdf, prefix, total_cost, total_sub_cost, total_man_cost):
-    grand_total = total_cost + total_sub_cost + total_man_cost
+def print_button_and_thank_you(pdf, prefix, total_cost, total_man_cost):
+    grand_total = total_cost + total_man_cost
     pay_link = paypal_link + str(grand_total)
     pdf.ln(6)
     pdf.image(img_dir+'paypal_button.jpg', x = 145.5, y = None, w = 55, h = 0, type = 'JPG', link = pay_link)
@@ -366,7 +285,6 @@ def print_button_and_thank_you(pdf, prefix, total_cost, total_sub_cost, total_ma
     pdf.cell(200, 10, txt="Thank you for your business. I am proud to be working with you!        ", ln=1, align="R")
     print_footer(pdf, prefix, grand_total)
 ###############################################################
-
 
 
 ###### FUNCTION TO PRINT OUT INVOICE FOOTER ######

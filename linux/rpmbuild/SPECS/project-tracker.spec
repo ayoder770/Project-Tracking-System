@@ -1,5 +1,5 @@
 Name: project-tracker
-Version: 2.0
+Version: 2.1
 Release: 1
 Summary: System to track projects
 
@@ -9,7 +9,7 @@ License: N/A
 #Source0:
 
 #BuildRequires:
-#Requires:
+Requires: python3
 
 %description
 
@@ -25,7 +25,6 @@ mkdir -p $RPM_BUILD_ROOT/etc/xdg/menus/applications-merged/
 mkdir -p $RPM_BUILD_ROOT/usr/share/applications/
 mkdir -p $RPM_BUILD_ROOT/opt/project-tracker/database/
 mkdir -p $RPM_BUILD_ROOT/opt/project-tracker/images/
-mkdir -p $RPM_BUILD_ROOT/opt/project-tracker/spreadsheets/
 
 cp ../../../python/* %{_sourcedir}
 cp ../../../scripts/* %{_sourcedir}
@@ -42,7 +41,6 @@ cp ../../../configs/* %{_sourcedir}
 rm -rf $RPM_BUILD_ROOT
 
 install -d -m 0755 $RPM_BUILD_ROOT/opt/project-tracker/
-install -d -m 0755 $RPM_BUILD_ROOT/opt/project-tracker/spreadsheets/
 install -d -m 0755 $RPM_BUILD_ROOT/opt/project-tracker/images/
 install -d -m 0777 $RPM_BUILD_ROOT/opt/project-tracker/database/
 install -d -m 0755 $RPM_BUILD_ROOT/usr/share/applications/
@@ -54,7 +52,6 @@ install -m 0644 %{_sourcedir}/*.jpg $RPM_BUILD_ROOT/opt/project-tracker/images/
 install -m 0644 %{_sourcedir}/*.py $RPM_BUILD_ROOT/opt/project-tracker/
 install -m 0644 %{_sourcedir}/*.sh $RPM_BUILD_ROOT/opt/project-tracker/
 
-install -m 0644 %{_sourcedir}/clients.xlsx $RPM_BUILD_ROOT/opt/project-tracker/spreadsheets/
 install -m 0644 %{_sourcedir}/payPeriodStats.txt $RPM_BUILD_ROOT/opt/project-tracker/
 install -m 0644 %{_sourcedir}/project-tracker.sqlite $RPM_BUILD_ROOT/opt/project-tracker/database/
 
@@ -85,9 +82,6 @@ rm -f %{_sourcedir}/*
 %attr(0755, root, root) /opt/project-tracker/buildInvoices.sh
 %attr(0666, root, root) /opt/project-tracker/payPeriodStats.txt
 
-%attr(0755, root, root) /opt/project-tracker/spreadsheets/
-%config(noreplace) %attr(0666, root, root) /opt/project-tracker/spreadsheets/clients.xlsx
-
 %attr(0755, root, root) /opt/project-tracker/images/
 %attr(0644, root, root) /opt/project-tracker/images/paypal_button.jpg
 
@@ -106,6 +100,9 @@ rm -f %{_sourcedir}/*
 
 
 %changelog
+* Tue Sep 28 2021 Andrew Yoder <ayoder770@gmail.com> 2.1
+- Removed spreadsheet directory and client workbook
+- Added python3 as a dependency to the rpm
 * Sun Sep 26 2021 Andrew Yoder <ayoder770@gmail.com> 2.0
 - Added new desktop file and script for client manager utility
 * Mon Mar 29 2021 Andrew Yoder <ayoder770@gmail.com> 1.1

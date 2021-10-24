@@ -1,11 +1,12 @@
 #!/usr/bin/python
 ######################################################################
 # File History
-# 03/14/2021 - Andrew Yoder: Initial Release
-# 09/25/2021 - Andrew Yoder: Relocated add_new_client to new Client Manager Utility
-#                            Removed hidden deploy updates functionality
-#                            Moved wait() functionality to __main__ and removed commented out calls to wait()
-#                            Added .upper() to __main__ actions to make case insensitive
+# 03/14/2021 - Andrew Yoder : Initial Release
+# 09/25/2021 - Andrew Yoder : Relocated add_new_client to new Client Manager Utility
+#                           : Removed hidden deploy updates functionality
+#                           : Moved wait() functionality to __main__ and removed commented out calls to wait()
+#                           : Added .upper() to __main__ actions to make case insensitive
+# 10/03/2021 - Andrew Yoder : Deprecated "add_subcontractor" capability. Covered by manual line item functionality
 ######################################################################
 
 import sys
@@ -66,30 +67,6 @@ def add_new_project():
     db.commit()
     db.close()
     print('New Project '+new_proj_name+' Has Been Successfully Added For Client '+prefix)
-    print("*********************************************************************************************************************************")
-    print('')
-    
-    
-# FUNCTION TO ADD SUBCONTRACTOR WORK
-def add_subcontractor():
-    print('')
-    print("*********************************************************************************************************************************")
-    print("*************************************************** ADDING SUBCONTRACTOR WORK ***************************************************")
-    print("*********************************************************************************************************************************")
-    sc_name = input("Enter Name of Subcontractor: ")
-    sc_job = input("Enter Project/Task of Subcontractor: ")
-    sc_client = input("Enter Prefix of Client Job Done For: ")
-    sc_hours = input("Enter Hours Worked: ")
-    sc_rate = input("Enter Subcontractor's Rate: ")
-    sc_cost = input("Enter Total Cost: ")
-    db = sqlite3.connect(pt_db)
-    # Get a cursor object
-    cursor = db.cursor()
-    cursor.execute('''INSERT INTO subcontractors(sub_name,sub_job,for_client,sub_hours,sub_rate,sub_cost) VALUES(?,?,?,?,?,?)''',(sc_name,sc_job,sc_client,sc_hours,sc_rate,sc_cost))
-    db.commit()
-    db.close()
-    print('')
-    print("Work Successfully Added For Subcontractor "+sc_name)
     print("*********************************************************************************************************************************")
     print('')
     
@@ -328,7 +305,6 @@ def delete_project_s():
     allornot = input("Do You want to Clear all Projects for "+prefix+"? (Y/N): ")
     if allornot == "Y":
         cursor.execute('''DELETE FROM '''+client_proj_table)
-        cursor.execute('''DELETE FROM subcontractors WHERE for_client = ?''',(prefix,))
         cursor.execute('''DELETE FROM manual_work WHERE for_client = ?''',(prefix,))
         print("All Projects Cleared for "+prefix)
         print('')
@@ -360,7 +336,6 @@ if __name__ == "__main__":
         print("Add A New Project: NP")
         print("View Project Reports: R")
         print("Delete Project(s): D")
-        print("Add Subcontractor Work: S")
         print("Add Manual/Fixed Task: M")
         print("Edit a Current Project: E")
         print("Quit Program: Q")
@@ -376,8 +351,6 @@ if __name__ == "__main__":
             break
         elif ( action == "D" ):
             delete_project_s()
-        elif ( action == "S" ):
-            add_subcontractor()
         elif ( action == "M" ):
             add_manual_job()
         elif ( action == "E" ):

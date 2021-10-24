@@ -1,8 +1,9 @@
-<!-- Filename: Freelance.menu -->
-<!-- Description: Show Freelance menu options -->
-
 <!DOCTYPE Menu PUBLIC "-//freedesktop//DTD Menu 1.0//EN"
  "http://www.freedesktop.org/standards/menu-spec/1.0/menu.dtd">
+<!--##################################################################
+# File History
+# 10/24/2021 - Andrew Yoder : Removed Freelance verbiage and added a header                      
+###################################################################-->
 
 <Menu>
 

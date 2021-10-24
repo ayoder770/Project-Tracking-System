@@ -18,3 +18,12 @@
 - Updated pay.pdf to pull all clients from sqlite database vs Excel workbook
 - Use client's full name in Pay Period Stats via the prefix/abbreviation
 - Create the client's Invoice directory if it does not exist
+
+2.1-1 : 10/24/2021
+- Removed spreadsheet directory and client workbook. No longer used
+- Deprecated "add_subcontractor" capability. Covered by manual task addition
+- Code cleanup in pay_time.py - Removed functions commented out due to not being used
+- Added python3 as a dependency of the Linux rpm
+- Began a script to update the database at install time if needed. Will complete in later release
+- Replaced the Linux rpm Makefile with a Jenkins build script
+- Removed legacy Freelance verbiage from project-tracker.menu
