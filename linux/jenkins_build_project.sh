@@ -1,7 +1,7 @@
 #!/bin/bash
 ######################################################################
 # File History
-# 10/23/2021 - Andrew Yoder : Initial Release to build Linux rpm from
+# 10/24/2021 - Andrew Yoder : Initial Release to build Linux rpm from
 #                             Jenkins
 ######################################################################
 
@@ -17,4 +17,4 @@ mkdir -p "${WORKSPACE}/linux/rpmbuild/SRPMS/"
 rpmbuild --define "_topdir ${WORKSPACE}/linux/rpmbuild/" --target noarch -ba "${WORKSPACE}/linux/rpmbuild/SPECS/project-tracker.spec"
 
 # Copy the rpm to Jenkins workspace
-cp "${WORKSPACE}/linux/rpmbuild/RPMS/noarch/project-tracker.*rpm" "$WORKSPACE"
+cp "${WORKSPACE}/linux/rpmbuild/RPMS/noarch/project-tracker*.rpm" "$WORKSPACE"
