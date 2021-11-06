@@ -6,7 +6,8 @@ Summary: System to track projects
 #Group:
 License: N/A
 #URL:
-#Source0:
+Source0: fpdf-install-1.7.2.tar.gz
+Source1: project-tracker.tar.gz
 
 #BuildRequires:
 Requires: python3
@@ -14,57 +15,39 @@ Requires: python3
 %description
 
 
+
 %prep
+echo "Prep"
+rm -rf %{_builddir}/*
 
-# Clean up any remnants of previous build
-rm -rf $RPM_BUILD_ROOT
-rm -f %{_sourcedir}/*
+%autosetup -n project-tracker-staging -c
+%autosetup -n project-tracker-staging -D -T -a 1
 
-# Set up the directories
-mkdir -p $RPM_BUILD_ROOT/etc/xdg/menus/applications-merged/
-mkdir -p $RPM_BUILD_ROOT/usr/share/applications/
-mkdir -p $RPM_BUILD_ROOT/opt/project-tracker/database/
-mkdir -p $RPM_BUILD_ROOT/opt/project-tracker/images/
-
-cp ../../../python/* %{_sourcedir}
-cp ../../../scripts/* %{_sourcedir}
-cp ../../../linux/menu/* %{_sourcedir}
-cp ../../../images/* %{_sourcedir}
-cp ../../../configs/* %{_sourcedir}
 
 
 %build
-#%{make_build}
+echo "Build"
+
 
 
 %install
-rm -rf $RPM_BUILD_ROOT
+echo "Install"
+rm -rf %{buildroot}/*
 
-install -d -m 0755 $RPM_BUILD_ROOT/opt/project-tracker/
-install -d -m 0755 $RPM_BUILD_ROOT/opt/project-tracker/images/
-install -d -m 0777 $RPM_BUILD_ROOT/opt/project-tracker/database/
-install -d -m 0755 $RPM_BUILD_ROOT/usr/share/applications/
-install -d -m 0755 $RPM_BUILD_ROOT/etc/xdg/menus/applications-merged/
-
-install -m 0644 %{_sourcedir}/*.desktop $RPM_BUILD_ROOT/usr/share/applications/
-install -m 0644 %{_sourcedir}/*.menu $RPM_BUILD_ROOT/etc/xdg/menus/applications-merged/
-install -m 0644 %{_sourcedir}/*.jpg $RPM_BUILD_ROOT/opt/project-tracker/images/
-install -m 0644 %{_sourcedir}/*.py $RPM_BUILD_ROOT/opt/project-tracker/
-install -m 0644 %{_sourcedir}/*.sh $RPM_BUILD_ROOT/opt/project-tracker/
-
-install -m 0644 %{_sourcedir}/payPeriodStats.txt $RPM_BUILD_ROOT/opt/project-tracker/
-install -m 0644 %{_sourcedir}/project-tracker.sqlite $RPM_BUILD_ROOT/opt/project-tracker/database/
+cp -a %{_builddir}/project-tracker-staging/* %{buildroot}
 
 
 
 # Cleanup after the build process
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 rm -f %{_sourcedir}/*
+rm -rf %{_builddir}/*
+
 
 
 %files
-%defattr(-,root,root,-)
+%defattr(0644,root,root,0755)
 
 # Menu Files
 %attr(0644, root, root) /usr/share/applications/project-tracker.desktop
@@ -88,11 +71,12 @@ rm -f %{_sourcedir}/*
 %attr(0777, root, root) /opt/project-tracker/database/
 %config(noreplace) %attr(0666, root, root) /opt/project-tracker/database/project-tracker.sqlite
 
+%attr(0755, root, root) /usr/local/lib/python3.6/site-packages/
 
-%doc
 
 
 %pre
+
 
 
 %post
@@ -100,6 +84,9 @@ rm -f %{_sourcedir}/*
 
 
 %changelog
+* Sat Nov 06 2021 Andrew Yoder <ayoder770@gmail.com> 2.2
+- Updated to include fpdf to rpm
+- Get Project Tracker source from tar vs staging in spec
 * Tue Sep 28 2021 Andrew Yoder <ayoder770@gmail.com> 2.1
 - Removed spreadsheet directory and client workbook
 - Added python3 as a dependency to the rpm

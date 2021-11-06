@@ -1,7 +1,8 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 ######################################################################
 # File History
-# 09/25/2021 - Andrew Yoder: Initial Release
+# 09/25/2021 - Andrew Yoder : Initial Release
+# 11/06/2021 - Andrew Yoder : Specifically call out python3
 ######################################################################
 
 import sqlite3

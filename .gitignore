@@ -1,6 +1,11 @@
-# Ignore rpm dirs
-linux/rpmbuild/BUILD/*
-linux/rpmbuild/BUILDROOT/*
-linux/rpmbuild/RPMS/*
-linux/rpmbuild/SOURCES/*
-linux/rpmbuild/SRPMS/*
+# Build related files and directories
+build/rpmbuild/BUILD/
+build/rpmbuild/BUILDROOT/
+build/rpmbuild/RPMS/
+build/rpmbuild/SOURCES/
+build/rpmbuild/SRPMS/
+build/third-party-python/fpdf/build/
+build/third-party-python/fpdf/install/
+build/project-tracker-staging/
+build/third-party-python/fpdf/fpdf-install-1.7.2.tar.gz
+build/project-tracker.tar.gz

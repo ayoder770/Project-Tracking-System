@@ -1,9 +1,10 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 ######################################################################
 # File History
 # 03/14/2021 - Andrew Yoder : Initial Release
 # 03/29/2021 - Andrew Yoder : Updated USER to get username from the system
 # 09/28/2021 - Andrew Yoder : Removed client spreadsheet definitions. No longer used
+# 11/06/2021 - Andrew Yoder : Specifically call out python3
 ######################################################################
 
 import platform, os

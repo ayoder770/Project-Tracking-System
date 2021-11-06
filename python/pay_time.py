@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 ######################################################################
 # File Name: pay_time.py
 #
@@ -6,6 +7,7 @@
 # File History
 # 03/14/2021 - Andrew Yoder : Initial Release
 # 09/28/2021 - Andrew Yoder : Removed commented out / dead code
+# 11/06/2021 - Andrew Yoder : Specifically call out python3
 ######################################################################
 
 import datetime

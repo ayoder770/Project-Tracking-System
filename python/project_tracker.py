@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 ######################################################################
 # File History
 # 03/14/2021 - Andrew Yoder : Initial Release
@@ -7,6 +7,7 @@
 #                           : Moved wait() functionality to __main__ and removed commented out calls to wait()
 #                           : Added .upper() to __main__ actions to make case insensitive
 # 10/03/2021 - Andrew Yoder : Deprecated "add_subcontractor" capability. Covered by manual line item functionality
+# 11/06/2021 - Andrew Yoder : Specifically call out python3
 ######################################################################
 
 import sys

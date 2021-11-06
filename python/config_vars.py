@@ -1,7 +1,8 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 ######################################################################
 # File History
-# 03/14/2021 - Andrew Yoder: Initial Release
+# 03/14/2021 - Andrew Yoder : Initial Release
+# 11/06/2021 - Andrew Yoder : Specifically call out python3
 ######################################################################
 
 # pdf.py variables

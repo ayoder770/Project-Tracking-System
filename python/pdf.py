@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 ######################################################################
 # File History
 # 03/14/2021 - Andrew Yoder : Initial Release
@@ -7,6 +8,7 @@
 #                           : Restructure for __main__
 #                           : Use full client's name in Pay Period Stats file/popup
 # 10/03/2021 - Andrew Yoder : Removed code related to building subcontractor work
+# 11/06/2021 - Andrew Yoder : Specifically call out python3
 ######################################################################
 
 import fpdf, sqlite3, datetime, os
