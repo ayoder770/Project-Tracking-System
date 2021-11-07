@@ -33,5 +33,5 @@
 - Relocated build directory into a new directory named "build"
 - Added fpdf 1.7.2 to be packaged with Linux packages
 - Updated build script to build fpdf and stage the Project Tracker files outside of the rpm spec file
-- Added support to build .deb packaged
+- Added support to build .deb packages
 - Updated .gitignore to ignore built/staged files and directories

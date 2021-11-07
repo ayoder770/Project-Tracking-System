@@ -9,3 +9,4 @@ build/third-party-python/fpdf/install/
 build/project-tracker-staging/
 build/third-party-python/fpdf/fpdf-install-1.7.2.tar.gz
 build/project-tracker.tar.gz
+build/deb/project-tracker*

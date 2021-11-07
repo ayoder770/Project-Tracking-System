@@ -1,0 +1,5 @@
+Package: project-tracker
+Version: __VERSION__
+Architecture: amd64
+Maintainer: Andrew Yoder
+Description: System to track projects

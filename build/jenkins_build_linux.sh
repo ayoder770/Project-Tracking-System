@@ -5,11 +5,22 @@
 #                             Jenkins
 # 11/06/2021 - Andrew Yoder : Build fpdf 1.7.2 and create tar file
 #                           : Create tar file for Project Tracker source
-#                           : Update to support both rpm and deb
+#                           : Update to support both rpm and deb builds
 ######################################################################
+
+WORKSPACE="/home/ayoder/github/Project-Tracking-System/"
 
 # Which Linux distro to build
 distro="$1"
+
+# Version and Release of Build
+version="$2"
+release="$3"
+
+if [ "$#" -ne 3 ]; then
+  echo "Must supply three arguments: <rpm|deb> <version> <release>"
+  exit 1
+fi
 
 # Build fpdf and create tar file
 fpdf_dir="${WORKSPACE}/build/third-party-python/fpdf/"
@@ -72,5 +83,24 @@ if [ "$distro" == "rpm" ]; then
 
   # Copy the rpm to Jenkins workspace
   cp ${WORKSPACE}/build/rpmbuild/RPMS/noarch/project-tracker*rpm "$WORKSPACE"
+
+fi
+
+
+# Build deb package
+if [ "$distro" == "deb" ]; then
+
+  rm -rf "${WORKSPACE}/build/deb/project-tracker_${version}-${release}_amd64/"
+  mkdir -p "${WORKSPACE}/build/deb/project-tracker_${version}-${release}_amd64/DEBIAN/"
+
+  # Copy and update the control file
+  cp "${WORKSPACE}/build/deb/control" "${WORKSPACE}/build/deb/project-tracker_${version}-${release}_amd64/DEBIAN/"
+  sed -i "s/__VERSION__/${version}-${release}/g" "${WORKSPACE}/build/deb/project-tracker_${version}-${release}_amd64/DEBIAN/control"
+
+  # Untar source
+  tar xf "${WORKSPACE}/build/project-tracker.tar.gz" -C "${WORKSPACE}/build/deb/project-tracker_${version}-${release}_amd64/"
+  tar xf "${fpdf_dir}/fpdf-install-1.7.2.tar.gz" -C "${WORKSPACE}/build/deb/project-tracker_${version}-${release}_amd64/"
+
+  dpkg-deb --build --root-owner-group "${WORKSPACE}/build/deb/project-tracker_${version}-${release}_amd64/"
 
 fi
