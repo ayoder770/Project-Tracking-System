@@ -28,7 +28,7 @@
 - Replaced the Linux rpm Makefile with a Jenkins build script
 - Removed legacy Freelance verbiage from project-tracker.menu
 
-2.2-1 : 
+2.2-1 : 11/08/2021
 - Added "/usr/bin/python3" to the top of all Python scripts
 - Relocated build directory into a new directory named "build"
 - Added fpdf 1.7.2 to be packaged with Linux packages
