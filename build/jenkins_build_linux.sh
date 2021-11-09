@@ -1,5 +1,9 @@
 #!/bin/bash
 ######################################################################
+# File Name: jenkins_build_linux.sh
+#
+# Description: Build Linux packages from Jenkins
+#
 # File History
 # 10/24/2021 - Andrew Yoder : Initial Release to build Linux rpm from
 #                             Jenkins
@@ -8,9 +12,7 @@
 #                           : Update to support both rpm and deb builds
 ######################################################################
 
-WORKSPACE="/home/ayoder/github/Project-Tracking-System/"
-
-# Which Linux distro to build
+# Which Linux distro to build. Supports 'rpm' and 'deb'
 distro="$1"
 
 # Version and Release of Build
@@ -79,7 +81,7 @@ if [ "$distro" == "rpm" ]; then
   cp "${fpdf_dir}/fpdf-install-1.7.2.tar.gz" "${WORKSPACE}/build/rpmbuild/SOURCES/"
 
   # Build the rpm
-  rpmbuild --define "_topdir ${WORKSPACE}/build/rpmbuild/" --target noarch -ba "${WORKSPACE}/build/rpmbuild/SPECS/project-tracker.spec"
+  rpmbuild --define "_version ${version}" --define "_release ${release}" --define "_topdir ${WORKSPACE}/build/rpmbuild/" --target noarch -ba "${WORKSPACE}/build/rpmbuild/SPECS/project-tracker.spec"
 
   # Copy the rpm to Jenkins workspace
   cp ${WORKSPACE}/build/rpmbuild/RPMS/noarch/project-tracker*rpm "$WORKSPACE"

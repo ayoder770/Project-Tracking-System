@@ -1,6 +1,6 @@
 Name: project-tracker
-Version: 2.1
-Release: 1
+Version: %{_version}
+Release: %{_release}
 Summary: System to track projects
 
 #Group:
@@ -84,7 +84,8 @@ rm -rf %{_builddir}/*
 
 
 %changelog
-* Sat Nov 06 2021 Andrew Yoder <ayoder770@gmail.com> 2.2
+* Mon Nov 08 2021 Andrew Yoder <ayoder770@gmail.com> 2.2
+- Pass in version and release as variables vs hardcode
 - Updated to include fpdf to rpm
 - Get Project Tracker source from tar vs staging in spec
 * Tue Sep 28 2021 Andrew Yoder <ayoder770@gmail.com> 2.1
