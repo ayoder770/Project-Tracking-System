@@ -8,6 +8,8 @@
 # 03/14/2021 - Andrew Yoder : Initial Release
 # 09/28/2021 - Andrew Yoder : Removed commented out / dead code
 # 11/06/2021 - Andrew Yoder : Specifically call out python3
+# 01/01/2022 - Andrew Yoder : Fix month comparison for year rollover
+#                           : Return year as integer, not string
 ######################################################################
 
 import datetime
@@ -49,7 +51,7 @@ def get_last_month_numb() -> str:
 def get_last_month_name() -> str:
     this_month = get_month_numb()
     # If this month is January, then last month is December
-    if ( this_month == 1 ): 
+    if ( this_month == "01" ): 
         return month_by_numb[str(12)]
     else:
         return month_by_numb[str(int(this_month) - 1)]
@@ -57,7 +59,7 @@ def get_last_month_name() -> str:
 
 # Return current year
 def get_this_year():
-    return now.strftime("%Y")
+    return now.year
 
 
 # Return current day of month

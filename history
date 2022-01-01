@@ -36,3 +36,6 @@
 - Added support to build .deb packages
 - Updated .gitignore to ignore built/staged files and directories
 - Make version and release parameters to the build process to avoid hard-coding the values
+
+2.3-1 : 
+- Updated pdf.py and pay_time.py to correct invoice build errors with year rollover

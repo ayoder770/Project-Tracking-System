@@ -1,5 +1,9 @@
 #!/usr/bin/python3
 ######################################################################
+# File Name: pdf.py
+#
+# Description: Build invoices as PDFs
+#
 # File History
 # 03/14/2021 - Andrew Yoder : Initial Release
 # 03/29/2021 - Andrew Yoder : Added imports from config_vars
@@ -9,6 +13,7 @@
 #                           : Use full client's name in Pay Period Stats file/popup
 # 10/03/2021 - Andrew Yoder : Removed code related to building subcontractor work
 # 11/06/2021 - Andrew Yoder : Specifically call out python3
+# 01/01/2022 - Andrew Yoder : Account for year rollover for period #2 invoice built the next month
 ######################################################################
 
 import fpdf, sqlite3, datetime, os
@@ -342,6 +347,9 @@ if ( __name__ == "__main__" ):
     # Determine information based on the day the invoice is being built
     this_day        = pay_time.get_this_day()
 
+    # Get the year for which this invoice is being built   
+    this_year = pay_time.get_this_year()
+
     # Get month of invoice
     # If < 4, a period 2 invoice from last month is being built
     if int(this_day) < 4:
@@ -349,15 +357,15 @@ if ( __name__ == "__main__" ):
         # ... get the name and number of last month...
         invoice_month = pay_time.get_last_month_name()
         invoice_month_numb = pay_time.get_last_month_numb()
+        # Account for year rollover
+        if ( invoice_month == "December" ):
+            this_year = int(this_year) - 1
     # If > 16, a period 2 invoice for current month is being built
     # Otherwise, a period 1 invoice is beign built for the current month
     # In either case, the same functions are called
     else:
         invoice_month      = pay_time.get_month_name()
         invoice_month_numb = pay_time.get_month_numb()
-
-    # Get the year for which this invoice is being built   
-    this_year = pay_time.get_this_year()
 
     # Get the period number and dates for which invoice is being built
     period_number   = pay_time.get_period_number( this_day, "pdf")
