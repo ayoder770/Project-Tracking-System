@@ -10,6 +10,7 @@
 # 11/06/2021 - Andrew Yoder : Specifically call out python3
 # 01/01/2022 - Andrew Yoder : Fix month comparison for year rollover
 #                           : Return year as integer, not string
+# 01/16/2022 - Andrew Yoder : Updated for 2022 Federal Holidays
 ######################################################################
 
 import datetime
@@ -21,7 +22,21 @@ month_by_numb = {"1":"January","2":"February","3":"March","4":"April","5":"May",
 days_in_month = {"January":"31st","February":"28th","March":"31st","April":"30th","May":"31st","June":"30th","July":"31st","August":"31st","September":"30th","October":"31st","November":"30th","December":"31st"}
 
 # Dictionary for all federal holidays to not send invoices on
-fed_holidays = {"01-01":"New Year's Day","01-18":"MLK Day","05-XX":"Memorial Day","07-04":"Independence Day","09-07":"Labor Day","11-22":"Thanksgiving Day","11-23":"Black Friday","12-24":"Christmas Eve","12-25":"Christmas Day","12-31":"New Year's Eve"}
+fed_holidays = {"01-01" : "New Year's Day",
+                "01-17" : "Martin Luther King Jr. Day",
+                "02-21" : "President's Day",
+                "05-30" : "Memorial Day",
+                "06-19" : "Juneteenth",
+                "07-04" : "Independence Day",
+                "09-05" : "Labor Day",
+                "10-10" : "Columbus Day",
+                "11-11" : "Veteran's Day",
+                "11-24" : "Thanksgiving Day",
+                "11-25" : "Friday After Thanksgiving",
+                "12-24" : "Christmas Eve",
+                "12-25" : "Christmas Day",
+                "12-31" : "New Year's Eve"
+                }
 
 # Get a current date/time object
 now = datetime.datetime.now()

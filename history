@@ -39,3 +39,4 @@
 
 2.3-1 : 
 - Updated pdf.py and pay_time.py to correct invoice build errors with year rollover
+- Updated pay_time.py for federal holidays in 2022
