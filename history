@@ -37,6 +37,6 @@
 - Updated .gitignore to ignore built/staged files and directories
 - Make version and release parameters to the build process to avoid hard-coding the values
 
-2.3-1 : 
+2.3-1 : 01/17/2022
 - Updated pdf.py and pay_time.py to correct invoice build errors with year rollover
 - Updated pay_time.py for federal holidays in 2022
