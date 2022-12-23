@@ -14,6 +14,7 @@
 # 10/03/2021 - Andrew Yoder : Removed code related to building subcontractor work
 # 11/06/2021 - Andrew Yoder : Specifically call out python3
 # 01/01/2022 - Andrew Yoder : Account for year rollover for period #2 invoice built the next month
+# 12/22/2022 - Andrew Yoder : Use a variable configured per-platform to launch the build PDFs
 ######################################################################
 
 import fpdf, sqlite3, datetime, os
@@ -23,7 +24,7 @@ import pay_time
 class MyFPDF(FPDF):
     pass
 
-from platform_config import this_os, pt_base_dir, db_dir, pt_db, img_dir, Freelance_home
+from platform_config import this_os, pt_base_dir, db_dir, pt_db, img_dir, Freelance_home, open_cmd
 from config_vars import provider_name, provider_title, paypal_link, provider_phone, provider_email, provider_location
 
 
@@ -401,10 +402,10 @@ if ( __name__ == "__main__" ):
             doc_name = prefix + "_" + invoice_month + "_" + str(this_year) + "_Invoice_" + str(period_number) + ".pdf"
             doc_build = doc_path + doc_name
             pdf.output(doc_build)
-            if ( this_os == "Linux" ):
-                os.system("xdg-open "+doc_build)
-            elif ( this_os == "Windows" ):
-                os.system("start " + doc_build)
+
+            # Open the PDF
+            os.system( open_cmd + " " + doc_build )
+
         else:
             print( client_name + ": Total Charges: $0.00" )
   
