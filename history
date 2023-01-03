@@ -44,3 +44,6 @@
 3.0-1 : TBD
 - Added support for MacOS to platform_config.py
 - Set a variable per-platform with the command to launch documents programmatically
+- Added utility to edit and view provider details from the database vs. being hardcoded in a Python file
+- Updated modify_database.py to create and populate the provider details table if it does not exist
+- Updated holidays for 2023

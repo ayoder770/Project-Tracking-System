@@ -1,0 +1,16 @@
+######################################################################
+# File Name: project-tracker-provider-details.desktop
+#
+# Description: Launch the Provider Details Utility
+#
+# File History
+# 01/03/2023 - Andrew Yoder: Initial Release
+######################################################################
+
+[Desktop Entry]
+Type=Application
+Name=Provider Details
+Icon=/usr/share/icons/Adwaita/32x32/actions/contact-new-symbolic.symbolic.png
+Exec=gnome-terminal --geometry=129x30 --title="Provider Details" -e "python3 /opt/project-tracker/provider_details.py"
+Categories=Project_Tracker
+MimeType=application/x-newtype

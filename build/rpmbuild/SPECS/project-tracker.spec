@@ -53,6 +53,7 @@ rm -rf %{_builddir}/*
 %attr(0644, root, root) /usr/share/applications/project-tracker.desktop
 %attr(0644, root, root) /usr/share/applications/project-tracker-build-invoice.desktop
 %attr(0644, root, root) /usr/share/applications/project-tracker-client-manager.desktop
+%attr(0644, root, root) /usr/share/applications/project-tracker-provider-details.desktop
 %attr(0644, root, root) /etc/xdg/menus/applications-merged/project-tracker.menu
 
 %attr(0755, root, root) /opt/project-tracker/
@@ -60,8 +61,10 @@ rm -rf %{_builddir}/*
 %attr(0755, root, root) /opt/project-tracker/client_manager.py
 %attr(0755, root, root) /opt/project-tracker/pay_time.py
 %attr(0755, root, root) /opt/project-tracker/pdf.py
-%config(noreplace) %attr(0755, root, root) /opt/project-tracker/platform_config.py
-%config(noreplace) %attr(0755, root, root) /opt/project-tracker/config_vars.py
+%attr(0755, root, root) /opt/project-tracker/platform_config.py
+%attr(0755, root, root) /opt/project-tracker/config_vars.py
+%attr(0755, root, root) /opt/project-tracker/provider_details.py
+%attr(0755, root, root) /opt/project-tracker/modify_database.py
 %attr(0755, root, root) /opt/project-tracker/buildInvoices.sh
 %attr(0666, root, root) /opt/project-tracker/payPeriodStats.txt
 
@@ -80,10 +83,13 @@ rm -rf %{_builddir}/*
 
 
 %post
-
+python3 /opt/project-tracker/modify_database.py
 
 
 %changelog
+* Tue Jan 03 2023 Andrew Yoder <ayoder770@gmail.com> 3.0
+- Added files for provider details utility and database updates
+- Added post scriptlet to run modify_database.py
 * Mon Nov 08 2021 Andrew Yoder <ayoder770@gmail.com> 2.2
 - Pass in version and release as variables vs hardcode
 - Updated to include fpdf to rpm

@@ -11,6 +11,7 @@
 # 01/01/2022 - Andrew Yoder : Fix month comparison for year rollover
 #                           : Return year as integer, not string
 # 01/16/2022 - Andrew Yoder : Updated for 2022 Federal Holidays
+# 01/03/2023 - Andrew Yoder : Updated for 2023 Holidays
 ######################################################################
 
 import datetime
@@ -23,16 +24,15 @@ days_in_month = {"January":"31st","February":"28th","March":"31st","April":"30th
 
 # Dictionary for all federal holidays to not send invoices on
 fed_holidays = {"01-01" : "New Year's Day",
-                "01-17" : "Martin Luther King Jr. Day",
-                "02-21" : "President's Day",
-                "05-30" : "Memorial Day",
+                "01-16" : "Martin Luther King Jr. Day",
+                "02-20" : "President's Day",
+                "05-29" : "Memorial Day",
                 "06-19" : "Juneteenth",
                 "07-04" : "Independence Day",
-                "09-05" : "Labor Day",
-                "10-10" : "Columbus Day",
-                "11-11" : "Veteran's Day",
-                "11-24" : "Thanksgiving Day",
-                "11-25" : "Friday After Thanksgiving",
+                "09-04" : "Labor Day",
+                "10-09" : "Columbus Day",
+                "11-10" : "Veteran's Day",
+                "11-23" : "Thanksgiving Day",
                 "12-24" : "Christmas Eve",
                 "12-25" : "Christmas Day",
                 "12-31" : "New Year's Eve"
