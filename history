@@ -41,7 +41,7 @@
 - Updated pdf.py and pay_time.py to correct invoice build errors with year rollover
 - Updated pay_time.py for federal holidays in 2022
 
-3.0-1 : TBD
+3.0-1 : 01/03/2023
 - Added support for MacOS to platform_config.py
 - Set a variable per-platform with the command to launch documents programmatically
 - Added utility to edit and view provider details from the database vs. being hardcoded in a Python file
