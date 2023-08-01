@@ -15,6 +15,7 @@
 # 11/06/2021 - Andrew Yoder : Specifically call out python3
 # 01/01/2022 - Andrew Yoder : Account for year rollover for period #2 invoice built the next month
 # 12/22/2022 - Andrew Yoder : Use a variable configured per-platform to launch the build PDFs
+# 08/01/2023 - Andrew Yoder : Properly cast/round grand_total variable for invoice and PayPal link : GH-6
 ######################################################################
 
 import fpdf, sqlite3, datetime, os
@@ -276,14 +277,14 @@ def print_grand_total_line(pdf, prefix, total_hours, total_cost, total_man_hours
 
     pdf.set_xy(pdf.l_margin + title_width + 2*(hours_rate_total_width), ybefore) 
     
-    pdf.multi_cell(hours_rate_total_width, table_height, "$"+str(format(total_cost + total_man_cost,'.2f')), border=1, align="C")
-    print_button_and_thank_you(pdf, prefix, total_cost, total_man_cost)
+    grand_total = float(format(total_cost + total_man_cost,'.2f'))
+    pdf.multi_cell(hours_rate_total_width, table_height, "$" + str(grand_total), border=1, align="C")
+    print_button_and_thank_you(pdf, prefix, grand_total)
 ####################################################
 
 
 ###### FUNCTION TO PRINT OUT PAYPAL BUTTON AND THANK YOU ######
-def print_button_and_thank_you(pdf, prefix, total_cost, total_man_cost):
-    grand_total = total_cost + total_man_cost
+def print_button_and_thank_you(pdf, prefix, grand_total):
     pay_link = paypal_link + str(grand_total)
     pdf.ln(6)
     pdf.image(img_dir+'paypal_button.jpg', x = 145.5, y = None, w = 55, h = 0, type = 'JPG', link = pay_link)
