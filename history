@@ -47,3 +47,6 @@
 - Added utility to edit and view provider details from the database vs. being hardcoded in a Python file
 - Updated modify_database.py to create and populate the provider details table if it does not exist
 - Updated holidays for 2023
+
+3.1-1 : TBD
+- Fixed grand_total rounding bug in pdf.py for PayPal link
