@@ -16,6 +16,8 @@
 # 01/01/2022 - Andrew Yoder : Account for year rollover for period #2 invoice built the next month
 # 12/22/2022 - Andrew Yoder : Use a variable configured per-platform to launch the build PDFs
 # 08/01/2023 - Andrew Yoder : Properly cast/round grand_total variable for invoice and PayPal link : GH-6
+# 08/26/2023 - Andrew Yoder : Added logic to differentiate between biweekly and monthly invoices : GF-5
+#                           : Removed code to determine date/time parameters. Pull directly from object
 ######################################################################
 
 import fpdf, sqlite3, datetime, os
@@ -70,12 +72,14 @@ def build_invoice(pdf, prefix):
 ################################################
 
 
-
 ###### FUNCTION TO BUILD INVOICE HEADER ######
 def build_invoice_header(pdf, prefix):
     
     pdf.set_font("Arial", size=20)
-    pdf.cell(200, 10, txt=invoice_month+" "+str(this_year)+" Invoice #"+str(period_number), ln=1, align="L")
+    if (frequency == "monthly"):
+        pdf.cell(200, 10, txt = invoice_month + " " + str(this_year) + " Invoice", ln=1, align="L")
+    elif (frequency == "biweekly"):
+        pdf.cell(200, 10, txt = invoice_month + " " + str(this_year) + " Invoice #" + str(period_number), ln=1, align="L")
     pdf.line(11,22,198,22)
     pdf.ln(6)
     pdf.set_font("Arial", size=10)
@@ -107,7 +111,6 @@ def build_invoice_header(pdf, prefix):
     pdf.ln(15)
     print_out_client_work(pdf, prefix)
 ##############################################
-
 
 
 ###### FUNCTION TO PRINT OUT ALL WORK DONE FOR CLIENT BY CONTRACTOR ######
@@ -312,11 +315,8 @@ def print_footer(pdf, prefix, grand_total):
 
     # Notice we have to account for the left margin to get the spacing between 
     # columns right.
-
     pdf.set_xy(column_width + pdf.l_margin + column_spacing, ybefore) 
-
     pdf.multi_cell(column_width, column_spacing, provider_location, align="L")
-    
     pdf.line(11,279,198,279)
     
     # Wrap up stuff
@@ -325,8 +325,6 @@ def print_footer(pdf, prefix, grand_total):
     print( client_name + ": Total Charges: $" + str(format(grand_total,'.2f')) )
 ##################################################
  
-    
-    
     
 #### MAIN PROGRAM ####
 if ( __name__ == "__main__" ):
@@ -343,38 +341,16 @@ if ( __name__ == "__main__" ):
     hours_rate_total_width = width = 19.0   # width of hours, rate, and total cells
     title_width = 133  # width of grand total lines
 
-    # Now Time Object
+    # Create time object and gather values
+    frequency = "monthly"
     now = datetime.datetime.now()
-
-    # Determine information based on the day the invoice is being built
-    this_day        = pay_time.get_this_day()
-
-    # Get the year for which this invoice is being built   
-    this_year = pay_time.get_this_year()
-
-    # Get month of invoice
-    # If < 4, a period 2 invoice from last month is being built
-    if int(this_day) < 4:
-        # Since we are building a period 2 invoice for last month...
-        # ... get the name and number of last month...
-        invoice_month = pay_time.get_last_month_name()
-        invoice_month_numb = pay_time.get_last_month_numb()
-        # Account for year rollover
-        if ( invoice_month == "December" ):
-            this_year = int(this_year) - 1
-    # If > 16, a period 2 invoice for current month is being built
-    # Otherwise, a period 1 invoice is beign built for the current month
-    # In either case, the same functions are called
-    else:
-        invoice_month      = pay_time.get_month_name()
-        invoice_month_numb = pay_time.get_month_numb()
-
-    # Get the period number and dates for which invoice is being built
-    period_number   = pay_time.get_period_number( this_day, "pdf")
-    this_period     = pay_time.get_this_period_dates(period_number, invoice_month)
-
-    # Get the dates for which this invoice is sent
-    this_sent_on = pay_time.get_send_this_date(period_number, this_day, invoice_month_numb)
+    dateobject = pay_time.Invoice_Build(now, frequency)
+    this_day = dateobject.build_day
+    period_number = dateobject.period_number
+    invoice_month = dateobject.invoice_month["name"]
+    this_year = dateobject.invoice_year
+    this_period = dateobject.invoice_date_range
+    this_sent_on = dateobject.invoice_send_date
     
     # Gather all clients from database
     db = sqlite3.connect(pt_db)
@@ -400,15 +376,18 @@ if ( __name__ == "__main__" ):
             if ( os.path.isdir( doc_path ) == False ):
                 os.makedirs( doc_path )
 
-            doc_name = prefix + "_" + invoice_month + "_" + str(this_year) + "_Invoice_" + str(period_number) + ".pdf"
+            if (frequency == "monthly"):
+                doc_name = prefix + "_" + invoice_month + "_" + str(this_year) + "_Invoice.pdf"
+            elif (frequency == "biweekly"):
+                doc_name = prefix + "_" + invoice_month + "_" + str(this_year) + "_Invoice_" + str(period_number) + ".pdf"
             doc_build = doc_path + doc_name
             pdf.output(doc_build)
 
             # Open the PDF
-            os.system( open_cmd + " " + doc_build )
+            os.system(open_cmd + " " + doc_build)
 
         else:
-            print( client_name + ": Total Charges: $0.00" )
+            print(client_name + ": Total Charges: $0.00")
   
     # Print out closing comments
     db.close()

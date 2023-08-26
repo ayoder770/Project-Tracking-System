@@ -49,4 +49,8 @@
 - Updated holidays for 2023
 
 3.1-1 : TBD
-- Fixed grand_total rounding bug in pdf.py for PayPal link
+- Fixed grand_total rounding bug in pdf.py for PayPal link - GH-6
+- Added support for differentiating between monthly and biweekly invoicing - GH-5
+- Converted the pay_time variables and functions into a Python class
+- Added a unit test folder and created unit test script for testing the date/time object
+- Number of minor stylistic changes to be more Pythonic
