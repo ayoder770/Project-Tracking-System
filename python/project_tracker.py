@@ -8,6 +8,8 @@
 #                           : Added .upper() to __main__ actions to make case insensitive
 # 10/03/2021 - Andrew Yoder : Deprecated "add_subcontractor" capability. Covered by manual line item functionality
 # 11/06/2021 - Andrew Yoder : Specifically call out python3
+# 08/26/2023 - Andrew Yoder : Ensure the selected project to track is a valid project ID : GH-3
+#                           : Minor cleanup in function track_current_project()
 ######################################################################
 
 import sys
@@ -132,26 +134,39 @@ def update_project():
 
 # FUNCTION TO PICK CLIENT AND PROJECT TO TRACK
 def track_current_project():
-    print('')
+    print("")
     print("*********************************************************************************************************************************")
     print("******************************************************* PROJECT TRACKING ********************************************************")
     print("*********************************************************************************************************************************")
-    prefix = input("Enter Prefix of Client to Track: ")
-    if ( prefix == 'X' or prefix == 'x' ):
-        return 
-    client_proj_table = prefix+"_projects"
-    #connect to db
-    db = sqlite3.connect(pt_db)
-    # Get a cursor object
-    cursor = db.cursor()
-    cursor.execute('''SELECT * FROM '''+client_proj_table)
-    for row in cursor:
-        print('{0}: {1}'.format(row[0],row[1]))
-    db.commit()
-    db.close()
-    ptt = input("Select ID Number of Project to Track: ")
-    if ( ptt == 'X' or ptt == 'x' ):
+
+    # Get the client prefix to track
+    prefix = input("Enter Prefix of Client to Track (or 'X' to cancel): ")
+    if (prefix.upper() == "X"):
         return
+
+    # Connect to db and get a cursor object to print out all active tasks
+    client_proj_table = prefix + "_projects"
+    db = sqlite3.connect(pt_db)
+    cursor = db.cursor()
+    cursor.execute('''SELECT * FROM ''' + client_proj_table)
+    valid_projects = set()
+    for row in cursor:
+        valid_projects.add(row[0])
+        print('{0}: {1}'.format(row[0], row[1]))
+    db.close()
+
+    # Ensure the selected project ID is valid
+    verified = False
+    while (verified == False):
+        ptt = input("Select ID Number of Project to Track (or 'X' to cancel): ")
+        if (ptt.upper() == "X"):
+            return
+        if (ptt.isdigit() and (int(ptt) in valid_projects)):
+            verified = True
+        else:
+            print("Invalid project ID. Please try again.")
+
+    # Valid project is chosen. Start tracking the project
     begin_tracking_project(prefix, ptt)
     
     
