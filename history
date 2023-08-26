@@ -54,3 +54,4 @@
 - Converted the pay_time variables and functions into a Python class
 - Added a unit test folder and created unit test script for testing the date/time object
 - Number of minor stylistic changes to be more Pythonic
+- Update to project_tracker.py to validate the selected project ID before beginning tracking - GH-3
