@@ -48,10 +48,11 @@
 - Updated modify_database.py to create and populate the provider details table if it does not exist
 - Updated holidays for 2023
 
-3.1-1 : TBD
+3.1-1 : 5/4/2024
 - Fixed grand_total rounding bug in pdf.py for PayPal link - GH-6
 - Added support for differentiating between monthly and biweekly invoicing - GH-5
 - Converted the pay_time variables and functions into a Python class
 - Added a unit test folder and created unit test script for testing the date/time object
 - Number of minor stylistic changes to be more Pythonic
 - Update to project_tracker.py to validate the selected project ID before beginning tracking - GH-3
+- Updated pay_time dates and federal holidays for 2024 - GH-11

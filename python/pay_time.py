@@ -14,6 +14,7 @@
 # 01/03/2023 - Andrew Yoder : Updated for 2023 Holidays
 # 08/05/2023 - Andrew Yoder : Refactored to be a class
 #                           : Added support for monthly invoicing : GH-5
+# 05/04/2024 - Andrew Yoder : Updated dates/holidays for 2024 : GH-11
 ######################################################################
 
 import datetime
@@ -27,20 +28,20 @@ class Invoice_Build:
     _month_by_numb = {"1":"January","2":"February","3":"March","4":"April","5":"May","6":"June","7":"July","8":"August","9":"September","10":"October","11":"November","12":"December"}
 
     # Dictionary for number of days in each month
-    _days_in_month = {"January":"31st","February":"28th","March":"31st","April":"30th","May":"31st","June":"30th","July":"31st","August":"31st","September":"30th","October":"31st","November":"30th","December":"31st"}
+    _days_in_month = {"January":"31st","February":"29th","March":"31st","April":"30th","May":"31st","June":"30th","July":"31st","August":"31st","September":"30th","October":"31st","November":"30th","December":"31st"}
 
     # Dictionary for all federal holidays to not send invoices on
     _fed_holidays = {
         "01-01" : "New Year's Day",
-        "01-16" : "Martin Luther King Jr. Day",
-        "02-20" : "President's Day",
-        "05-29" : "Memorial Day",
+        "01-15" : "Martin Luther King Jr. Day",
+        "02-19" : "President's Day",
+        "05-27" : "Memorial Day",
         "06-19" : "Juneteenth",
         "07-04" : "Independence Day",
-        "09-04" : "Labor Day",
-        "10-09" : "Columbus Day",
-        "11-10" : "Veteran's Day",
-        "11-23" : "Thanksgiving Day",
+        "09-02" : "Labor Day",
+        "10-14" : "Columbus Day",
+        "11-11" : "Veteran's Day",
+        "11-28" : "Thanksgiving Day",
         "12-24" : "Christmas Eve",
         "12-25" : "Christmas Day",
         "12-31" : "New Year's Eve"
